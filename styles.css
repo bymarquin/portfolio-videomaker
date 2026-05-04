@@ -93,6 +93,7 @@ body {
   color: var(--text);
   text-decoration: none;
   font-size: 0.92rem;
+  transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease;
 }
 .header-cta {
   margin-left: auto;
@@ -105,10 +106,20 @@ body {
   font-size: 0.84rem !important;
   font-weight: 700;
   line-height: 1;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
 .nav-hint {
   display: none;
+}
+
+.topbar.is-scrolled .topbar-link {
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.topbar.is-scrolled .header-cta {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
 }
 
 .brand {
@@ -618,6 +629,10 @@ section[id] {
     border: 1px solid var(--line);
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.66);
+  }
+
+  .topbar nav a:active {
+    transform: scale(0.98);
   }
   .header-cta {
     order: 3;

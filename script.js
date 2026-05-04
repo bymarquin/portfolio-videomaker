@@ -341,6 +341,13 @@ if (window.gsap && !reducedMotion) {
     .from(".eyebrow", { opacity: 0, y: 12, duration: 0.5 })
     .from(".anim-hero", { opacity: 0, y: 20, duration: 0.62, stagger: 0.08 }, "-=0.14");
 
+  gsap.from(".topbar-link, .header-cta", {
+    opacity: 0,
+    y: -10,
+    duration: 0.42,
+    stagger: 0.04
+  });
+
   gsap.to(".hero-media img", {
     yPercent: 6,
     ease: "none",
