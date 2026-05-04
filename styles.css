@@ -654,6 +654,10 @@ section[id] {
     padding: 1.55rem 0 2.7rem;
   }
 
+  section[id] {
+    scroll-margin-top: 122px;
+  }
+
   .hero {
     padding-top: 4.8rem;
     gap: 1rem;
