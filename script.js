@@ -156,8 +156,6 @@ const mainCta = document.getElementById("mainCta");
 const secondaryCta = document.getElementById("secondaryCta");
 const mobileFab = document.getElementById("mobileFab");
 const topbar = document.getElementById("topbar");
-const topnav = document.getElementById("topnav");
-const menuToggle = document.getElementById("menuToggle");
 const headerCta = document.getElementById("headerCta");
 
 headline.textContent = profile.headline;
@@ -327,42 +325,6 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     }
   });
 });
-
-const closeMenu = () => {
-  topbar.classList.remove("open");
-  menuToggle.setAttribute("aria-expanded", "false");
-  topnav.hidden = true;
-};
-
-const openMenu = () => {
-  topbar.classList.add("open");
-  menuToggle.setAttribute("aria-expanded", "true");
-  topnav.hidden = false;
-};
-
-if (menuToggle && topnav && topbar) {
-  menuToggle.addEventListener("click", () => {
-    const isOpen = topbar.classList.contains("open");
-    if (isOpen) closeMenu();
-    else openMenu();
-  });
-
-  topnav.querySelectorAll("a").forEach((a) => {
-    a.addEventListener("click", closeMenu);
-  });
-
-  window.addEventListener("resize", () => {
-    if (window.innerWidth > 820) {
-      topnav.hidden = false;
-      topbar.classList.remove("open");
-      menuToggle.setAttribute("aria-expanded", "false");
-    } else if (!topbar.classList.contains("open")) {
-      topnav.hidden = true;
-    }
-  });
-
-  if (window.innerWidth > 820) topnav.hidden = false;
-}
 
 if (!reducedMotion) {
   window.addEventListener("scroll", () => {
