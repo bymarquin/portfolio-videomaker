@@ -481,20 +481,7 @@ if (!reducedMotion && !isTouch) {
     });
   });
 
-  const magneticTargets = document.querySelectorAll(".btn, .header-cta");
-  magneticTargets.forEach((el) => {
-    el.addEventListener("pointermove", (event) => {
-      const rect = el.getBoundingClientRect();
-      const dx = event.clientX - (rect.left + rect.width / 2);
-      const dy = event.clientY - (rect.top + rect.height / 2);
-      const tx = (dx / rect.width) * fx.magnetic;
-      const ty = (dy / rect.height) * fx.magnetic;
-      el.style.transform = `translate(${tx.toFixed(2)}px, ${ty.toFixed(2)}px)`;
-    });
-    el.addEventListener("pointerleave", () => {
-      el.style.transform = "";
-    });
-  });
+  // Magnetic translation removed to avoid occasional button offset drift.
 }
 
 if (window.gsap && !reducedMotion) {
