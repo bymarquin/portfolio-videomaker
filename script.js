@@ -19,6 +19,8 @@ const profile = {
       challenge: "Pouca resposta nos anúncios curtos.",
       delivery: "Reel com gancho em 2s e edição dinâmica.",
       result: "Mais cliques e mais conversas no WhatsApp.",
+      preview:
+        "https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?auto=format&fit=crop&w=900&q=80",
       linkLabel: "Assistir",
       linkUrl: "https://www.behance.net/javideomakeredit",
       meta: "Reel 00:27",
@@ -29,6 +31,8 @@ const profile = {
       challenge: "Marca pessoal sem consistência visual.",
       delivery: "Série semanal com padrão de narrativa e edição.",
       result: "Posicionamento mais claro e retenção melhor.",
+      preview:
+        "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=900&q=80",
       linkLabel: "Ver projeto",
       linkUrl: "https://www.instagram.com/j.a_mobile?igsh=eGpkaHlxZWFuYmZj&utm_source=qr",
       meta: "Social 00:18",
@@ -39,6 +43,8 @@ const profile = {
       challenge: "Registrar evento sem perder emoção.",
       delivery: "Aftermovie com trilha, ritmo e finalização limpa.",
       result: "Conteúdo com maior percepção de valor da marca.",
+      preview:
+        "https://images.unsplash.com/photo-1601506521937-0121a7fc2f66?auto=format&fit=crop&w=900&q=80",
       linkLabel: "Ver teaser",
       linkUrl: "https://www.linkedin.com/in/jo%C3%A3o-ant%C3%B4nio-rodrigues-pereira-68165b3b3",
       meta: "Event 00:42",
@@ -49,6 +55,8 @@ const profile = {
       challenge: "Falta de frequência e calendário de posts.",
       delivery: "Pacote mensal de vídeos curtos em lote.",
       result: "Presença constante e operação mais previsível.",
+      preview:
+        "https://images.unsplash.com/photo-1579632652768-6cb9dcf85912?auto=format&fit=crop&w=900&q=80",
       linkLabel: "Ver entrega",
       linkUrl: "https://wa.me/+5588992737269",
       meta: "Retainer",
@@ -142,8 +150,6 @@ const brandIcons = {
 
 const headline = document.getElementById("headline");
 const subheadline = document.getElementById("subheadline");
-const aboutTitle = document.getElementById("aboutTitle");
-const aboutText = document.getElementById("aboutText");
 const footerText = document.getElementById("footerText");
 const projects = document.getElementById("projects");
 const services = document.getElementById("services");
@@ -151,17 +157,18 @@ const processSteps = document.getElementById("processSteps");
 const testimonials = document.getElementById("testimonials");
 const stats = document.getElementById("stats");
 const contactLinks = document.getElementById("contactLinks");
+const quickContacts = document.getElementById("quickContacts");
+const workSamples = document.getElementById("workSamples");
 const storySlides = document.getElementById("storySlides");
 const mainCta = document.getElementById("mainCta");
 const secondaryCta = document.getElementById("secondaryCta");
 const mobileFab = document.getElementById("mobileFab");
 const topbar = document.getElementById("topbar");
 const headerCta = document.getElementById("headerCta");
+const heroSection = document.getElementById("inicio");
 
 headline.textContent = profile.headline;
 subheadline.textContent = profile.subheadline;
-aboutTitle.textContent = profile.aboutTitle;
-aboutText.textContent = profile.aboutText;
 footerText.textContent = `© ${new Date().getFullYear()} ${profile.name}. Todos os direitos reservados.`;
 
 mainCta.href = profile.cta.portfolio.url;
@@ -184,9 +191,22 @@ profile.projects.forEach((item) => {
         <li><b>Resultado:</b> ${item.result}</li>
       </ul>
     </div>
-    <a href="${item.linkUrl}" target="_blank" rel="noopener noreferrer">${item.linkLabel} <i data-lucide="arrow-up-right" class="icon" aria-hidden="true"></i></a>
+    <a href="${profile.cta.whatsapp.url}" target="_blank" rel="noopener noreferrer">Falar no WhatsApp <i data-lucide="message-circle" class="icon" aria-hidden="true"></i></a>
   `;
   projects.appendChild(card);
+});
+
+profile.projects.slice(0, 3).forEach((item) => {
+  const card = document.createElement("article");
+  card.className = "sample-card";
+  card.innerHTML = `
+    <img src="${item.preview}" alt="Preview do projeto ${item.title}" loading="lazy" />
+    <div class="sample-card-body">
+      <h3>${item.title}</h3>
+      <a href="${item.linkUrl}" target="_blank" rel="noopener noreferrer">Ver amostra <i data-lucide="play" class="icon" aria-hidden="true"></i></a>
+    </div>
+  `;
+  workSamples.appendChild(card);
 });
 
 profile.stats.forEach((item) => {
@@ -247,9 +267,29 @@ profile.contacts.forEach((contact) => {
   contactLinks.appendChild(a);
 });
 
+profile.contacts.slice(0, 3).forEach((contact) => {
+  const a = document.createElement("a");
+  a.href = contact.url;
+  a.target = "_blank";
+  a.rel = "noopener noreferrer";
+  a.className = "quick-contact-btn";
+  const iconMarkup = brandIcons[contact.icon]
+    ? `<span class="icon" aria-hidden="true">${brandIcons[contact.icon]}</span>`
+    : `<i data-lucide="${contact.icon}" class="icon" aria-hidden="true"></i>`;
+  a.innerHTML = `${iconMarkup}${contact.label}`;
+  quickContacts.appendChild(a);
+});
+
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const isTouch = window.matchMedia("(pointer: coarse)").matches;
 const isSmallScreen = window.matchMedia("(max-width: 980px)").matches;
+const INTERACTION_LEVEL = "subtle";
+const interactionProfile = {
+  subtle: { tilt: 2.2, glow: 0.48, lift: 1, rippleMs: 420, magnetic: 4, ambient: 0.2 },
+  medium: { tilt: 4, glow: 0.84, lift: 1.7, rippleMs: 520, magnetic: 8, ambient: 0.34 },
+  strong: { tilt: 6, glow: 1.08, lift: 2.6, rippleMs: 620, magnetic: 12, ambient: 0.46 }
+};
+const fx = interactionProfile[INTERACTION_LEVEL] || interactionProfile.medium;
 const TURBO_MOTION = false;
 const motionPreset = isTouch || isSmallScreen
   ? {
@@ -327,8 +367,133 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
 });
 
 if (!reducedMotion) {
-  window.addEventListener("scroll", () => {
+  const updateGlassContext = () => {
+    const heroBottom = heroSection ? heroSection.getBoundingClientRect().bottom : 0;
+    const isClearContext = heroBottom > 130;
     topbar.classList.toggle("is-scrolled", window.scrollY > 12);
+    topbar.classList.toggle("glass-clear", isClearContext);
+    topbar.classList.toggle("glass-regular", !isClearContext);
+    document.body.classList.toggle("glass-clear-context", isClearContext);
+    document.body.classList.toggle("glass-regular-context", !isClearContext);
+  };
+
+  updateGlassContext();
+  window.addEventListener("scroll", updateGlassContext, { passive: true });
+  window.addEventListener("resize", updateGlassContext);
+} else {
+  topbar.classList.add("glass-regular");
+  document.body.classList.add("reduce-transparency");
+}
+
+if (!reducedMotion && !isTouch) {
+  const progress = document.createElement("div");
+  progress.className = "scroll-progress";
+  document.body.appendChild(progress);
+
+  const updateScrollProgress = () => {
+    const doc = document.documentElement;
+    const max = doc.scrollHeight - window.innerHeight;
+    const ratio = max > 0 ? window.scrollY / max : 0;
+    progress.style.transform = `scaleX(${Math.max(0, Math.min(1, ratio))})`;
+  };
+  updateScrollProgress();
+  window.addEventListener("scroll", updateScrollProgress, { passive: true });
+
+  let rafPending = false;
+  let lastPointerX = 0;
+  let lastPointerY = 0;
+  let activeGlass = null;
+
+  const pumpPointerFrame = () => {
+    rafPending = false;
+    const x = (lastPointerX / window.innerWidth) * 100;
+    const y = (lastPointerY / window.innerHeight) * 100;
+    document.body.style.setProperty("--ambient-x", `${x.toFixed(2)}%`);
+    document.body.style.setProperty("--ambient-y", `${y.toFixed(2)}%`);
+    document.body.style.setProperty("--ambient-opacity", `${fx.ambient}`);
+
+    if (!activeGlass) return;
+    const rect = activeGlass.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    const localX = lastPointerX - rect.left;
+    const localY = lastPointerY - rect.top;
+    const px = (localX / rect.width) * 100;
+    const py = (localY / rect.height) * 100;
+    const rx = ((localY / rect.height) - 0.5) * -fx.tilt;
+    const ry = ((localX / rect.width) - 0.5) * fx.tilt;
+
+    activeGlass.style.setProperty("--mx", `${px}%`);
+    activeGlass.style.setProperty("--my", `${py}%`);
+    activeGlass.style.setProperty("--glow", `${fx.glow}`);
+
+    if (activeGlass.matches(".sample-card, .project-card")) {
+      activeGlass.style.transform =
+        `perspective(900px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) translateY(-${fx.lift}px)`;
+    }
+  };
+
+  document.addEventListener("pointermove", (event) => {
+    lastPointerX = event.clientX;
+    lastPointerY = event.clientY;
+    if (!rafPending) {
+      rafPending = true;
+      window.requestAnimationFrame(pumpPointerFrame);
+    }
+  }, { passive: true });
+
+  const glassTargets = document.querySelectorAll(
+    ".topbar, .hero-media, .sample-card, .project-card, .process-item, .quote, .stat, .cta-band, .faq-list details, .btn, .contact-links a, .quick-contact-btn"
+  );
+
+  glassTargets.forEach((el) => {
+    el.classList.add("glass-interactive");
+
+    el.addEventListener("pointerenter", () => {
+      activeGlass = el;
+    });
+
+    el.addEventListener("pointerleave", () => {
+      if (activeGlass === el) activeGlass = null;
+      el.style.setProperty("--glow", "0");
+      if (el.matches(".sample-card, .project-card")) {
+        el.style.transform = "";
+      }
+    });
+  });
+
+  const rippleTargets = document.querySelectorAll(".btn, .contact-links a, .quick-contact-btn, .header-cta");
+  rippleTargets.forEach((el) => {
+    el.style.position = "relative";
+    el.style.overflow = "hidden";
+
+    el.addEventListener("pointerdown", (event) => {
+      const rect = el.getBoundingClientRect();
+      const ripple = document.createElement("span");
+      ripple.className = "glass-ripple";
+      const size = Math.max(rect.width, rect.height) * 1.1;
+      ripple.style.width = `${size}px`;
+      ripple.style.height = `${size}px`;
+      ripple.style.left = `${event.clientX - rect.left}px`;
+      ripple.style.top = `${event.clientY - rect.top}px`;
+      ripple.style.animationDuration = `${fx.rippleMs}ms`;
+      el.appendChild(ripple);
+      window.setTimeout(() => ripple.remove(), fx.rippleMs + 80);
+    });
+  });
+
+  const magneticTargets = document.querySelectorAll(".btn, .header-cta");
+  magneticTargets.forEach((el) => {
+    el.addEventListener("pointermove", (event) => {
+      const rect = el.getBoundingClientRect();
+      const dx = event.clientX - (rect.left + rect.width / 2);
+      const dy = event.clientY - (rect.top + rect.height / 2);
+      const tx = (dx / rect.width) * fx.magnetic;
+      const ty = (dy / rect.height) * fx.magnetic;
+      el.style.transform = `translate(${tx.toFixed(2)}px, ${ty.toFixed(2)}px)`;
+    });
+    el.addEventListener("pointerleave", () => {
+      el.style.transform = "";
+    });
   });
 }
 
